@@ -27,3 +27,26 @@ resource "aws_s3_bucket_public_access_block" "remote_bucket_public_access_block"
     ignore_public_acls      = true
     restrict_public_buckets = true
 }
+resource "aws_s3_bucket_server_side_encryption_configuration" "remote_bucket_encryption" {
+    bucket = aws_s3_bucket.remote_bucket.id
+    rule {
+      apply_server_side_encryption_by_default {
+        sse_algorithm = "AES256"
+      }
+    }
+}
+resource "aws_dynamodb_table" "remote_locks" {
+    name = "${var.project_name}-${random_string.suffix.result}"
+    billing_mode = "PAY_PER_REQUEST"
+    hash_key = "LockID"
+    attribute {
+        name = "LockID"
+        type = "S"
+    }
+    tags = {
+      Project = var.project_name
+    }
+    lifecycle {
+        prevent_destroy = true
+    }
+}
