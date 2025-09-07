@@ -1,6 +1,7 @@
 import json
 import boto3
 import os
+from decimal import Decimal
 
 dynamodb = boto3.resource('dynamodb')
 TABLE_NAME = os.environ.get('DYNAMODB_TABLE')
@@ -17,7 +18,7 @@ def lambda_handler(event, context):
             if not body_str:
                 print("No body in record")
                 continue
-            body = json.loads(body_str)
+            body = json.loads(body_str, parse_float=Decimal)
             orderId = body.get('orderId')
             if not orderId:
                 print("No orderId in body")
