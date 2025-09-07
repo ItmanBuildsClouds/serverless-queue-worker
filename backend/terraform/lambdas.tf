@@ -11,7 +11,7 @@ data "archive_file" "order_worker_zip" {
 resource "aws_lambda_function" "api_handler" {
   filename      = "${path.module}/../lambda_src/dist/api_handler.zip"
   function_name = "${var.project_name}-api-handler"
-  role = "${aws_iam_policy.api_lambda-policy.arn}"
+  role = "${aws_iam_role.api_lambda-role.arn}"
   handler = "api_handler.lambda_handler"
   runtime = "python3.12"
   timeout = 30
@@ -25,7 +25,7 @@ resource "aws_lambda_function" "api_handler" {
 resource "aws_lambda_function" "order_worker" {
   filename = "${path.module}/../lambda_src/dist/order_worker.zip"
   function_name = "${var.project_name}-order-worker"
-  role = "${aws_iam_policy.worker_lambda-policy.arn}"
+  role = "${aws_iam_role.worker_lambda-role.arn}"
   handler = "order_worker.lambda_handler"
   runtime = "python3.12"
   timeout = 30
