@@ -10,10 +10,10 @@ terraform {
     }
   }
   backend "s3" {
-    bucket = "queue-worker-cm10s4"
+    bucket = "queue-worker-<your-unique-id>"
     key    = "serverless-queue-worker/terraform/backend.tfstate"
     region = "eu-central-1"
-    dynamodb_table = "queue-worker-cm10s4"
+    dynamodb_table = "queue-worker-<your-unique-id>"
   }
 }
 provider "aws" {
